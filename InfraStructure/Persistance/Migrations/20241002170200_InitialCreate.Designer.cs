@@ -11,7 +11,7 @@ using Persistance.Data;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240930125658_InitialCreate")]
+    [Migration("20241002170200_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,14 +50,11 @@ namespace Persistance.Migrations
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("productTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("productTypeId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("products");
                 });
@@ -106,7 +103,7 @@ namespace Persistance.Migrations
 
                     b.HasOne("Domain.Entities.ProductType", "productType")
                         .WithMany("Products")
-                        .HasForeignKey("productTypeId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -13,7 +13,7 @@ namespace Services.MappingProfiles
     {
         public ProductProfile() {
 
-             CreateMap<Product, ProductDto>().ForMember(d=>d.BrandName,options=>options.MapFrom(s=>s.ProductBrand.Name)).ForMember(d=>d.TypeName,op=>op.MapFrom(s=>s.productType.Name));
+             CreateMap<Product, ProductDto>().ForMember(d=>d.BrandName,options=>options.MapFrom(s=>s.ProductBrand.Name)).ForMember(d=>d.TypeName,op=>op.MapFrom(s=>s.productType.Name)).ForMember(s=>s.PictureUrl,op=>op.MapFrom<PictureUrlResolver>());
              CreateMap<ProductBrand, BrandDto>();
              CreateMap<ProductType, TypeDto>();
 

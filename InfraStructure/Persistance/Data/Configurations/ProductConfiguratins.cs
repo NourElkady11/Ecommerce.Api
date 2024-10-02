@@ -14,6 +14,7 @@ namespace Persistance.Data.Configurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasOne(p => p.ProductBrand).WithMany(p => p.Products).HasForeignKey(p => p.BrandId);
+            builder.HasOne(p => p.productType).WithMany(p => p.Products).HasForeignKey(p => p.TypeId);
             builder.Property(p => p.Price).HasColumnType("decimal(18,3)");
            
         }

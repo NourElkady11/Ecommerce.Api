@@ -47,14 +47,11 @@ namespace Persistance.Migrations
                     b.Property<int>("TypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("productTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("productTypeId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("products");
                 });
@@ -103,7 +100,7 @@ namespace Persistance.Migrations
 
                     b.HasOne("Domain.Entities.ProductType", "productType")
                         .WithMany("Products")
-                        .HasForeignKey("productTypeId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

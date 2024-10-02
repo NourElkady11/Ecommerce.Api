@@ -47,7 +47,6 @@ namespace Persistance.Migrations
                     PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    productTypeId = table.Column<int>(type: "int", nullable: false),
                     TypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -60,8 +59,8 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_products_productTypes_productTypeId",
-                        column: x => x.productTypeId,
+                        name: "FK_products_productTypes_TypeId",
+                        column: x => x.TypeId,
                         principalTable: "productTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -73,9 +72,9 @@ namespace Persistance.Migrations
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_products_productTypeId",
+                name: "IX_products_TypeId",
                 table: "products",
-                column: "productTypeId");
+                column: "TypeId");
         }
 
         /// <inheritdoc />
