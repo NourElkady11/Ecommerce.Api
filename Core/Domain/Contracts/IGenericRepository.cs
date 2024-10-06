@@ -10,9 +10,13 @@ namespace Domain.Contracts
 {
     public interface IGenericRepository<TEntity,Tkey> where TEntity : BaseEntity<Tkey>
     {
-        Task<TEntity> GetElementByID(Tkey id);
+       
 
-        Task<IEnumerable<TEntity>> GetAllEelemntsAsync(bool trakChanges=false);
+        Task<TEntity?> GetAsync(Tkey id);
+        Task<TEntity?> GetAsync(Specifications<TEntity> specifications);
+
+        Task<IEnumerable<TEntity>> GetAllAsync(bool trakChanges=false); 
+        Task<IEnumerable<TEntity>> GetAllAsync(Specifications<TEntity> specifications);
 
         Task AddAsync(TEntity entity);
 

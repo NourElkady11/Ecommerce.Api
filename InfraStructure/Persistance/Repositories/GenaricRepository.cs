@@ -28,21 +28,29 @@ namespace Persistance.Repositories
         {
              storeContext.Set<TEnity>().Remove(entity);
         }
+        public void UpdateAsync(TEnity entity)
+        {
+             storeContext.Set<TEnity>().Update(entity);
+        }
 
-        public async Task<IEnumerable<TEnity>> GetAllEelemntsAsync(bool trakChanges = false)
+        public async Task<IEnumerable<TEnity>> GetAllAsync(bool trakChanges = false)
         {
             return trakChanges? await storeContext.Set<TEnity>().ToListAsync(): await storeContext.Set<TEnity>().AsNoTracking().ToListAsync();
            
         }
 
-        public async Task<TEnity> GetElementByID(Tkey id)
+        public async Task<TEnity> GetAsync(Tkey id)
         {
             return await storeContext.Set<TEnity>().FindAsync(id);
         }
 
-        public void UpdateAsync(TEnity entity)
-        {
-             storeContext.Set<TEnity>().Update(entity);
-        }
+        public async Task<TEnity?> GetAsync(Specifications<TEnity> specifications)=>ApplySpecifications(specifications).FirstOrDefault();
+      
+
+        public async Task<IEnumerable<TEnity>> GetAllAsync(Specifications<TEnity> specifications)=>await ApplySpecifications(specifications).ToListAsync();
+        
+
+        private IQueryable<TEnity> ApplySpecifications(Specifications<TEnity> specifications) => SpecificatinEvaluator.GetQuery<TEnity>(storeContext.Set<TEnity>(), specifications);
+     
     }
 }

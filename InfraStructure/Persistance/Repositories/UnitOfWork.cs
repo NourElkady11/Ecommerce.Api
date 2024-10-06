@@ -25,6 +25,7 @@ namespace Persistance.Repositories
         public IGenericRepository<Entity, TKey> GetRepository<Entity, TKey>() where Entity : BaseEntity<TKey>
         {
             return (IGenericRepository<Entity, TKey>) repositories.GetOrAdd(typeof(Entity).Name, _ => new GenaricRepository<Entity, TKey>(storeContext));
+          
 
         }
 
