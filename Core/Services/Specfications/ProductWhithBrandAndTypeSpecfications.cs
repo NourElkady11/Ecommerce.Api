@@ -1,6 +1,7 @@
 ﻿using AutoMapper.Configuration;
 using Domain.Contracts;
 using Domain.Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,32 +20,40 @@ namespace Services.Specfications
         }
 
         //get all products
-        public ProductWhithBrandAndTypeSpecfications(string? sort ,int? brandid ,int? TypeId) : base(product=>(!brandid.HasValue || product.BrandId==brandid.Value )&&(!TypeId.HasValue || product.TypeId==TypeId.Value))
+
+        public ProductWhithBrandAndTypeSpecfications(ProductSpecificationsParamters productSpecificationsParamters):base(product=>
+        (!productSpecificationsParamters.BrandId.HasValue || productSpecificationsParamters.BrandId==product.BrandId)&&
+        (!productSpecificationsParamters.TypeId.HasValue || productSpecificationsParamters.TypeId==product.TypeId) &&
+        (string.IsNullOrWhiteSpace(productSpecificationsParamters.Search) || product.Name.ToLower().Contains(productSpecificationsParamters.Search.ToLower().Trim())))
         {
             AddInclude(p => p.ProductBrand);
             AddInclude(p => p.productType);
+            ApplyPagination(productSpecificationsParamters.PageIndex, productSpecificationsParamters.PageSize);
+          
 
-            if (!string.IsNullOrWhiteSpace(sort))
+            if(productSpecificationsParamters.Sort is not null)
             {
-                switch (sort.ToLower().Trim())
+                switch (productSpecificationsParamters.Sort)
                 {
-                    case "pricedescending":
-                        SetOrderByDecending(p => p.Price);
-                        break;
-                    case "priceascending":
-                        SetOrderBy(p => p.Price);
-                        break;
-                    case "namedescending":
-                        SetOrderByDecending(p => p.Name);
-                        break;
-                    case "nameascending":
+                    case productFilterations.NameAscending:
                         SetOrderBy(p => p.Name);
-                        break; 
-
-                        default:
+                        break;
+                     case productFilterations.NameDescending:
+                        SetOrderByDecending(p => p.Name);
+                         break;
+                     case productFilterations.PriceAscending:
+                        SetOrderBy(p => p.Price);   
+                        break;
+                     case productFilterations.PriceDescending:
+                        SetOrderByDecending(p => p.Price);
                         break;
                 }
             }
+
+
+           
         }
+
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exeption;
 using Services.Abstractions;
 using Services.Specfications;
 using Shared;
@@ -10,19 +11,19 @@ namespace Services
     internal class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(string? sort ,int?brandId , int? typeId)
+        public async Task<PaginatedResult<ProductDto>> GetAllProductsAsync(ProductSpecificationsParamters productSpecificationsParamters)
         {
-            var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWhithBrandAndTypeSpecfications(sort,brandId,typeId));
+            var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWhithBrandAndTypeSpecfications(productSpecificationsParamters));
             var ProductResult = mapper.Map<IEnumerable<ProductDto>>(products);
-
-            return ProductResult;
+            var totalCount = await unitOfWork.GetRepository<Product, int>().CountAsync(new ProductWhithBrandAndTypeSpecfications(productSpecificationsParamters));
+            var result = new PaginatedResult<ProductDto>(productSpecificationsParamters.PageIndex, ProductResult.Count(), totalCount, ProductResult);
+            return result;
         }
 
         public async Task<ProductDto> GetProductById(int id)
         {
             var product = await unitOfWork.GetRepository<Product, int>().GetAsync(new ProductWhithBrandAndTypeSpecfications(id));
-            var ProductResult = mapper.Map<ProductDto>(product);
-            return ProductResult;
+            return product is null ? throw new ProductNotFoundEx(id) : mapper.Map<ProductDto>(product);
         }
 
         public async Task<IEnumerable<BrandDto>> GetAllBrandsAsync()

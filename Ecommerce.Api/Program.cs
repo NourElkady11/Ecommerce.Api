@@ -1,6 +1,10 @@
 
 using Domain.Contracts;
+using Ecommerce.Api.Factories;
+using Ecommerce.Api.Midlewares;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Persistance;
 using Persistance.Data;
 using Persistance.Repositories;
@@ -16,9 +20,7 @@ namespace Ecommerce.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
+            #region Services
             builder.Services.AddControllers().AddApplicationPart(typeof(Presentaion.AssemblyRefrence).Assembly);
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IServiceManger, ServiceManger>();
@@ -28,13 +30,18 @@ namespace Ecommerce.Api
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSqlConnection"));
             });
-            
+            builder.Services.Configure<ApiBehaviorOptions>(Options =>
+            {
+                Options.InvalidModelStateResponseFactory = ApiResponseFactrory.CustomValidationErrorResponse;
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            #endregion
             var app = builder.Build();
             await SeedDatabaseAsync(app);
+            #region Middlewares
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -49,9 +56,8 @@ namespace Ecommerce.Api
 
 
             app.MapControllers();
-
+            #endregion
             app.Run();
-
 
             async Task SeedDatabaseAsync(WebApplication app)
             {
