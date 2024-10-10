@@ -1,5 +1,6 @@
 
 using Domain.Contracts;
+using Ecommerce.Api.Extentions;
 using Ecommerce.Api.Factories;
 using Ecommerce.Api.Midlewares;
 using Microsoft.AspNetCore.Mvc;
@@ -20,28 +21,19 @@ namespace Ecommerce.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+
             #region Services
-            builder.Services.AddControllers().AddApplicationPart(typeof(Presentaion.AssemblyRefrence).Assembly);
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IServiceManger, ServiceManger>();
-            builder.Services.AddAutoMapper(typeof(Services.AssemblyRefrence).Assembly);
-            builder.Services.AddScoped<I_DbInitializer, DbInitializer>();
-            builder.Services.AddDbContext<StoreContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSqlConnection"));
-            });
-            builder.Services.Configure<ApiBehaviorOptions>(Options =>
-            {
-                Options.InvalidModelStateResponseFactory = ApiResponseFactrory.CustomValidationErrorResponse;
-            });
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddCoreServices();
+            builder.Services.AddInfraStructureServices(builder.Configuration);
+            builder.Services.AddPresentationServices();
             #endregion
+
             var app = builder.Build();
-            await SeedDatabaseAsync(app);
+
             #region Middlewares
-            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+            await app.SeedDbAsync();
+            app.UseCustomExeptionMiddleware();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -51,22 +43,11 @@ namespace Ecommerce.Api
             }
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
             #endregion
             app.Run();
 
-            async Task SeedDatabaseAsync(WebApplication app)
-            {
-                using var scope = app.Services.CreateScope();
-
-                var dbInitializer = scope.ServiceProvider.GetRequiredService<I_DbInitializer>();
-
-                await dbInitializer.InitializeAsync();
-            }
         }
 
     
