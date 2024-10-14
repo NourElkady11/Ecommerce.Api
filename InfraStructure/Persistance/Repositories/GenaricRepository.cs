@@ -33,13 +33,13 @@ namespace Persistance.Repositories
              storeContext.Set<TEnity>().Update(entity);
         }
 
-        public async Task<IEnumerable<TEnity>> GetAllAsync(bool trakChanges = false)
+        public async Task<IEnumerable<TEnity>?> GetAllAsync(bool trakChanges = false)
         {
             return trakChanges? await storeContext.Set<TEnity>().ToListAsync(): await storeContext.Set<TEnity>().AsNoTracking().ToListAsync();
            
         }
 
-        public async Task<TEnity> GetAsync(Tkey id)
+        public async Task<TEnity?> GetAsync(Tkey id)
         {
             return await storeContext.Set<TEnity>().FindAsync(id);
         }

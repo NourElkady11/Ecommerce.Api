@@ -9,5 +9,7 @@ namespace Services.Abstractions
     public interface IServiceManger
     {
         public IProductService productService { get; }
+        public IBacketService backetService { get; }
+
     }
 }
