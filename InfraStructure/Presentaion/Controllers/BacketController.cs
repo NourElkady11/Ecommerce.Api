@@ -9,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace Presentaion.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BacketController(IServiceManger serviceManger):ControllerBase
+
+    public class BacketController(IServiceManger serviceManger):ApiController
     {
-
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BacketDto>> GetBacket(string id)
@@ -23,9 +20,8 @@ namespace Presentaion.Controllers
             return Ok(backet);
         }
 
-
         [HttpPost]
-        public async Task<ActionResult<BacketDto>> CreateOrUpdateBacket(BacketDto backetDto)
+        public async Task<ActionResult<BacketDto>> UpdateBacket(BacketDto backetDto)
         {
             var backet = await serviceManger.backetService.CreateOrUpdateBacketAsync(backetDto);
             return Ok(backet);

@@ -10,7 +10,9 @@ namespace Shared.ErrorModels
     {
         public int StatusCode { get; set; }
         public string ErrorMessage { get; set; }
-        public IEnumerable<ValidationError> Errors { get; set; }
+        public string Field { get; set; }
+        public IEnumerable<ValidationError> errors { get; set; }
+
     }
 
     public class ValidationError

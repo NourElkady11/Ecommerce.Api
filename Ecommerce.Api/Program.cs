@@ -4,6 +4,7 @@ using Ecommerce.Api.Extentions;
 using Ecommerce.Api.Factories;
 using Ecommerce.Api.Midlewares;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Persistance;
@@ -24,7 +25,7 @@ namespace Ecommerce.Api
 
 
             #region Services
-            builder.Services.AddCoreServices();
+            builder.Services.AddCoreServices(builder.Configuration);
             builder.Services.AddInfraStructureServices(builder.Configuration);
             builder.Services.AddPresentationServices();
             #endregion
@@ -43,8 +44,12 @@ namespace Ecommerce.Api
             }
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.MapControllers();
+
             #endregion
             app.Run();
 

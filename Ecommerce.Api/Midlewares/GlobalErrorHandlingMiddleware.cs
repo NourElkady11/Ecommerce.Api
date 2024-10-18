@@ -41,21 +41,27 @@ namespace Ecommerce.Api.Midlewares
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             httpContext.Response.ContentType = "application/json";
 
-            httpContext.Response.StatusCode = ex switch
-            {
-                NotFoundEx => (int)HttpStatusCode.NotFound,
-                _ => (int)HttpStatusCode.InternalServerError
-
-            };
-
-
             var response = new ErrorDetails()
             {
                 ErrorMessage = ex.Message,
-                StatusCode = httpContext.Response.StatusCode
-            }/*.ToString()*/;//TO CONVERT TO APPLICATION/JSON
 
-            await httpContext.Response.WriteAsJsonAsync(response);//WriteasjsonAsync
+            };
+            httpContext.Response.StatusCode = ex switch
+            {
+                NotFoundEx => (int)HttpStatusCode.NotFound,
+                UnAuthorizedException=> (int)HttpStatusCode.Unauthorized,
+                ValidationExeption validationExeption => HandleValidationException(validationExeption,response),
+                _ => (int)HttpStatusCode.InternalServerError
+
+            };
+            response.StatusCode=httpContext.Response.StatusCode;
+            await httpContext.Response.WriteAsJsonAsync(response);
+        }
+
+        private int HandleValidationException(ValidationExeption validationExeption, ErrorDetails response)
+        {
+            response.Errors = validationExeption.Errors;
+            return (int)HttpStatusCode.BadRequest;
         }
 
         private async Task HandleNotFoundEndPoint(HttpContext httpContext)

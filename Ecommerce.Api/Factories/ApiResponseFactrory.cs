@@ -10,12 +10,11 @@ namespace Ecommerce.Api.Factories
         {
             var errors = actionContext.ModelState.Where(error => error.Value.Errors.Any()).Select(error =>new ValidationError{Field=error.Key,Errors=error.Value.Errors.Select(e=>e.ErrorMessage) });
             //To capture errors from modelstate Dictionary and project it as a ValidationError
-
             var response = new ValidationErrorResponse
             {
                 StatusCode = (int)HttpStatusCode.BadRequest,
                 ErrorMessage = "Validatin Falied",
-                Errors = errors
+                errors = errors
 
             };
             return new BadRequestObjectResult(response);

@@ -18,7 +18,6 @@ namespace Services.MappingProfiles
              CreateMap<ProductType, TypeDto>();
 
 
-        
         }
     }
 }

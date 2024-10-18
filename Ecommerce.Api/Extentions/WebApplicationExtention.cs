@@ -13,6 +13,8 @@ namespace Ecommerce.Api.Extentions
 
             await dbInitializer.InitializeAsync();
 
+            await dbInitializer.InitializeIdentityAsync();
+
             return webApplication;
         }
 

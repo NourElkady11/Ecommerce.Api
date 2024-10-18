@@ -14,5 +14,6 @@ namespace Services.Abstractions
         public Task<BacketDto?> CreateOrUpdateBacketAsync(BacketDto backetDto);
 
         public Task<bool> DeleteBacketAsync(string id);
+
     }
 }

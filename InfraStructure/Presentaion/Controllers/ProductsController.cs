@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared;
@@ -12,9 +13,8 @@ using System.Threading.Tasks;
 
 namespace Presentaion.Controllers
 {
-    [ApiController]
-    [Route("api/[Controller]")]
-    public class ProductsController(IServiceManger serviceManger):ControllerBase
+    [Authorize(AuthenticationSchemes ="Bearer",Roles ="Admin")]
+    public class ProductsController(IServiceManger serviceManger):ApiController
     {
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProdcts([FromQuery] ProductSpecificationsParamters productSpecificationsParamters)
@@ -37,10 +37,7 @@ namespace Presentaion.Controllers
             return Ok(products);
         }
 
-        [ProducesResponseType(typeof(ErrorDetails),(int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails),(int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse),(int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ProductDto),(int)HttpStatusCode.OK)]
+     
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
