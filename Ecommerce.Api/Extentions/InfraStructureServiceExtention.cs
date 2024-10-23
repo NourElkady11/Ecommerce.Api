@@ -50,7 +50,7 @@ namespace Ecommerce.Api.Extentions
 
                 };
             });
-            Services.AddAuthorization();
+         /*   Services.AddAuthorization();*/
           
 
 

@@ -39,7 +39,7 @@ namespace Persistance.Repositories
            
         }
 
-        public async Task<TEnity?> GetAsync(Tkey id)
+        public async Task<TEnity?> GetAsyncByid(Tkey id)
         {
             return await storeContext.Set<TEnity>().FindAsync(id);
         }

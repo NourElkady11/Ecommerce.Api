@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Entities.OrderEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Data;
@@ -64,6 +65,30 @@ namespace Persistance
                     if (products is not null && products.Any())
                     {
                         await storeContext.products.AddRangeAsync(products);
+                        await storeContext.SaveChangesAsync();
+                    }
+                }
+            
+                if (!storeContext.productBrands.Any())
+                {
+                    var brandsData = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\brands.json");
+                    var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
+
+                    if (brands is not null && brands.Any())
+                    {
+                        await storeContext.productBrands.AddRangeAsync(brands);
+                        await storeContext.SaveChangesAsync();
+                    }
+                }
+
+                if (!storeContext.DeliveryWays.Any())
+                {
+                    var Deliveryways = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\DeliveryWays.json");
+                    var DileveyObject = JsonSerializer.Deserialize<List<DeliveryWays>>(Deliveryways);
+
+                    if (DileveyObject is not null && DileveyObject.Any())
+                    {
+                        await storeContext.DeliveryWays.AddRangeAsync(DileveyObject);
                         await storeContext.SaveChangesAsync();
                     }
                 }

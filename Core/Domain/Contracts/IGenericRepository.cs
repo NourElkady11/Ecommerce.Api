@@ -12,7 +12,7 @@ namespace Domain.Contracts
     {
        
 
-        Task<TEntity?> GetAsync(Tkey id);
+        Task<TEntity?> GetAsyncByid(Tkey id);
 
         Task<TEntity?> GetAsync(Specifications<TEntity> specifications);
 

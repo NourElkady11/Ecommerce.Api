@@ -3,23 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Api", "Ecommerce.Api\Ecommerce.Api.csproj", "{614E47BB-FC36-4882-8175-FB9B23028746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.Api", "Ecommerce.Api\Ecommerce.Api.csproj", "{614E47BB-FC36-4882-8175-FB9B23028746}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{3430D8D1-C73F-41F3-852F-C802F679D880}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Core\Domain\Domain.csproj", "{BE7F8F54-5022-4CC2-A4AA-62E95BC92FC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Core\Domain\Domain.csproj", "{BE7F8F54-5022-4CC2-A4AA-62E95BC92FC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Core\Services\Services.csproj", "{ED4995DD-0E78-4C65-A17A-3FD0D4CFD143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Core\Services\Services.csproj", "{ED4995DD-0E78-4C65-A17A-3FD0D4CFD143}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Abstractions", "Core\Services.Abstractions\Services.Abstractions.csproj", "{AA89A742-14EF-4BB6-A192-458E51454DFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Abstractions", "Core\Services.Abstractions\Services.Abstractions.csproj", "{AA89A742-14EF-4BB6-A192-458E51454DFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InfraStructure", "InfraStructure", "{97638115-6368-428E-BAE2-C286875A545B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance", "InfraStructure\Persistance\Persistance.csproj", "{5A4BC74F-12BA-4FD0-87A8-A7AB3AB13ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistance", "InfraStructure\Persistance\Persistance.csproj", "{5A4BC74F-12BA-4FD0-87A8-A7AB3AB13ADB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentaion", "InfraStructure\Presentaion\Presentaion.csproj", "{99E87301-F831-4219-ACD5-E16E3A3CB09B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentaion", "InfraStructure\Presentaion\Presentaion.csproj", "{99E87301-F831-4219-ACD5-E16E3A3CB09B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{719CB024-DD9C-4E7B-B37A-063E5E147CE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{719CB024-DD9C-4E7B-B37A-063E5E147CE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminDashboard", "AdminDashboard\AdminDashboard.csproj", "{F4F14610-09DD-4585-B83B-52070A6976C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{719CB024-DD9C-4E7B-B37A-063E5E147CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{719CB024-DD9C-4E7B-B37A-063E5E147CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{719CB024-DD9C-4E7B-B37A-063E5E147CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4F14610-09DD-4585-B83B-52070A6976C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4F14610-09DD-4585-B83B-52070A6976C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4F14610-09DD-4585-B83B-52070A6976C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4F14610-09DD-4585-B83B-52070A6976C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
