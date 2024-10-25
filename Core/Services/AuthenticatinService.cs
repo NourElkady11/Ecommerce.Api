@@ -61,7 +61,11 @@ namespace Services
                 user.address.Country = addressDto.Country;
                 user.address.UserId = user.Id;
             }
-         
+            else
+            {
+                var updateAddress = mapper.Map<Address>(addressDto);
+                user.address = updateAddress;
+            }
             await userManager.UpdateAsync(user);
 
             return addressDto;
