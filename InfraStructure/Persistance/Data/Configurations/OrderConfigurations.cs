@@ -13,7 +13,7 @@ namespace Persistance.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.HasMany(e=>e.orderItems).WithOne();
+            builder.HasMany(e=>e.orderItems).WithOne().OnDelete(DeleteBehavior.Cascade);
 
             builder.OwnsOne(e => e.ShippingAddress, e => e.WithOwner());
 

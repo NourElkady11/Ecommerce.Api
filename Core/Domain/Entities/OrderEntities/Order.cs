@@ -12,14 +12,15 @@ namespace Domain.Entities.OrderEntities
         {
             
         }
-        public Order(string userEmail, AddressOfOrder shippingAddress, ICollection<OrderItems> orderItems,  DeliveryWays deliveryWays, decimal subtotal)
+        public Order(string userEmail, AddressOfOrder shippingAddress, ICollection<OrderItems> orderItems, deliveryMethod deliveryWays, decimal subtotal, string paymentIntentId)
         {
-            Id= Guid.NewGuid(); //it will be setet by default =>same number of digits but zeros
+            Id = Guid.NewGuid(); //it will be setet by default =>same number of digits but zeros
             UserEmail = userEmail;
             ShippingAddress = shippingAddress;
             this.orderItems = orderItems;
             this.DeliveryWay = deliveryWays;
             Subtotal = subtotal;
+            PaymentIntentId = paymentIntentId;
         }
 
         public string UserEmail { get; set; }
@@ -30,7 +31,7 @@ namespace Domain.Entities.OrderEntities
 
         public OrderPymentStatus PymentStatus { get; set; } = OrderPymentStatus.pending;
 
-        public DeliveryWays DeliveryWay { get; set; }//Relation (Navigational)
+        public deliveryMethod DeliveryWay { get; set; }//Relation (Navigational)
         public int? DelierywaysID { get; set; }
 
         public decimal Subtotal { get; set; }//Quantity * Price

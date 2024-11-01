@@ -14,7 +14,7 @@ namespace Presentaion.Controllers
     public class AuthenticationController(IServiceManger serviceManger):ApiController
     {
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<UserResultDto>>Login(LoginDto loginDto)
         {
             var result=await serviceManger.authenticationService.LoginAsync(loginDto);
@@ -23,14 +23,14 @@ namespace Presentaion.Controllers
 
 
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<ActionResult<UserResultDto>> Register(UserRegisterDto userRegisterDto)
         {
             var result = await serviceManger.authenticationService.RegisterAsync(userRegisterDto);
             return Ok(result);
         }
 
-        [HttpGet("EmailExist")]
+        [HttpGet("emailexists")]
         public async Task<ActionResult<bool>> CheckEmailExist(string email)
         {
             var result = await serviceManger.authenticationService.CheckEmailExist(email);
@@ -51,7 +51,7 @@ namespace Presentaion.Controllers
 
 
 
-        [HttpGet("Address")]
+        [HttpGet("address")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<AddressDto>> GetUserAddress()
         {
@@ -62,7 +62,7 @@ namespace Presentaion.Controllers
 
 
 
-        [HttpPut("Address")]
+        [HttpPut("address")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto addressDto)
         {

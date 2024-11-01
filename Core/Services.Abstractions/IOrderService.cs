@@ -14,9 +14,9 @@ namespace Services.Abstractions
 
         public Task<IEnumerable<OrderResult>> GetOrdersbyEmailAsync(string email);
 
-        public Task<OrderResult> CreateOrder(OrderRequest orderRequest, string UserEmail);
+        public Task<OrderResult> CreateOrUpdateOrder(OrderRequest orderRequest, string UserEmail);
 
-        public Task<IEnumerable<DeliveryWaysResult>> GetDeliveryWaysAsync(); 
+        public Task<IEnumerable<deliveryMethodResult>> GetDeliveryWaysAsync(); 
 
 
     }

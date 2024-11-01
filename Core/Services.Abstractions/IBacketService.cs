@@ -9,9 +9,9 @@ namespace Services.Abstractions
 {
     public interface IBacketService
     {
-        public Task<BacketDto?> GetBacketAsync(string id);
+        public Task<BasketDto?> GetBacketAsync(string id);
 
-        public Task<BacketDto?> CreateOrUpdateBacketAsync(BacketDto backetDto);
+        public Task<BasketDto?> CreateOrUpdateBacketAsync(BasketDto backetDto);
 
         public Task<bool> DeleteBacketAsync(string id);
 

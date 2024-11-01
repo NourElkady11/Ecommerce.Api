@@ -32,8 +32,9 @@ namespace Persistance
                 {
                     await storeContext.Database.MigrateAsync();
                 }
+              
 
-                if (!storeContext.productTypes.Any())
+                if (!await storeContext.productTypes.AnyAsync())
                 {
                     var typesData = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\types.json");
                     var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
@@ -45,7 +46,7 @@ namespace Persistance
                     }
                 }
 
-                if (!storeContext.productBrands.Any())
+                if (!await storeContext.productBrands.AnyAsync())
                 {
                     var brandsData = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\brands.json");
                     var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
@@ -57,10 +58,19 @@ namespace Persistance
                     }
                 }
 
-                if (!storeContext.products.Any())
+
+                if (!await storeContext.products.AnyAsync())
                 {
                     var productsData = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\products.json");
-                    var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+
+                    // Set options to ignore case
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    // Pass options to JsonSerializer
+                    var products = JsonSerializer.Deserialize<List<Product>>(productsData, options);
 
                     if (products is not null && products.Any())
                     {
@@ -68,27 +78,35 @@ namespace Persistance
                         await storeContext.SaveChangesAsync();
                     }
                 }
-            
-                if (!storeContext.productBrands.Any())
-                {
-                    var brandsData = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\brands.json");
-                    var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
-                    if (brands is not null && brands.Any())
-                    {
-                        await storeContext.productBrands.AddRangeAsync(brands);
-                        await storeContext.SaveChangesAsync();
-                    }
-                }
+                /*     if (!storeContext.productBrands.Any())
+                     {
+                         var brandsData = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\brands.json");
+                         var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
-                if (!storeContext.DeliveryWays.Any())
+                         if (brands is not null && brands.Any())
+                         {
+                             await storeContext.productBrands.AddRangeAsync(brands);
+                             await storeContext.SaveChangesAsync();
+                         }
+                     }*/
+
+                if (!await storeContext.deliveryMethod.AnyAsync())
                 {
                     var Deliveryways = await File.ReadAllTextAsync(@"..\InfraStructure\\Persistance\\Data\\Seeding\\DeliveryWays.json");
-                    var DileveyObject = JsonSerializer.Deserialize<List<DeliveryWays>>(Deliveryways);
+
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    var DileveyObject = JsonSerializer.Deserialize<List<deliveryMethod>>(Deliveryways,options);
+
 
                     if (DileveyObject is not null && DileveyObject.Any())
                     {
-                        await storeContext.DeliveryWays.AddRangeAsync(DileveyObject);
+                        await storeContext.deliveryMethod.AddRangeAsync(DileveyObject);
                         await storeContext.SaveChangesAsync();
                     }
                 }

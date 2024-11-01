@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace Presentaion.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public class OrdersController(IServiceManger serviceManger):ApiController
+    public class ordersController(IServiceManger serviceManger):ApiController
     {
      
-        [HttpGet("DeliveryWays")]
+        [HttpGet("deliveryMethods")]
         [AllowAnonymous]
-        public async Task<ActionResult<DeliveryWaysResult>> GetAllDeliveryWays()
+        public async Task<ActionResult<deliveryMethodResult>> GetAllDeliveryWays()
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
             var order = await serviceManger.orderService.GetDeliveryWaysAsync();
@@ -28,7 +28,7 @@ namespace Presentaion.Controllers
         public async Task<ActionResult<OrderResult>> Create(OrderRequest request)
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
-            var order = await serviceManger.orderService.CreateOrder(request, email);
+            var order = await serviceManger.orderService.CreateOrUpdateOrder(request, email);
             return Ok(order);
 
         }

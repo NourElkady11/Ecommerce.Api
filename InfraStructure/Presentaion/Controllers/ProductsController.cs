@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Presentaion.Controllers
 {
     [Authorize(AuthenticationSchemes ="Bearer",Roles ="Admin")]
-    public class ProductsController(IServiceManger serviceManger):ApiController
+    public class productsController(IServiceManger serviceManger):ApiController
     {
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProdcts([FromQuery] ProductSpecificationsParamters productSpecificationsParamters)
@@ -23,14 +23,14 @@ namespace Presentaion.Controllers
             return Ok(products);
         } 
         
-        [HttpGet("Brands")]
+        [HttpGet("brands")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllBrands()
         {
             var products = await serviceManger.productService.GetAllBrandsAsync();
             return Ok(products);
         } 
         
-        [HttpGet("Types")]
+        [HttpGet("types")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllTypess()
         {
             var products = await serviceManger.productService.GetAllTypesAsync();

@@ -12,8 +12,8 @@ using Persistance.Data;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20241023142714_Update2OrderModule")]
-    partial class Update2OrderModule
+    [Migration("20241030152153_buildDataBase")]
+    partial class buildDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,34 +24,6 @@ namespace Persistance.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Entities.OrderEntities.DeliveryWays", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,3)");
-
-                    b.Property<string>("DeliveryTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeliveryWays");
-                });
 
             modelBuilder.Entity("Domain.Entities.OrderEntities.Order", b =>
                 {
@@ -122,6 +94,34 @@ namespace Persistance.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("Domain.Entities.OrderEntities.deliveryMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("cost")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("deliveryTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("shortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("deliveryMethod");
+                });
+
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -130,29 +130,29 @@ namespace Persistance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int>("brandId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PictureUrl")
+                    b.Property<string>("pictureUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("price")
                         .HasColumnType("decimal(18,3)");
 
-                    b.Property<int>("TypeId")
+                    b.Property<int>("typeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
+                    b.HasIndex("brandId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("typeId");
 
                     b.ToTable("products");
                 });
@@ -193,7 +193,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.OrderEntities.Order", b =>
                 {
-                    b.HasOne("Domain.Entities.OrderEntities.DeliveryWays", "DeliveryWay")
+                    b.HasOne("Domain.Entities.OrderEntities.deliveryMethod", "DeliveryWay")
                         .WithOne("Order")
                         .HasForeignKey("Domain.Entities.OrderEntities.Order", "DelierywaysID")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -237,20 +237,21 @@ namespace Persistance.Migrations
                 {
                     b.HasOne("Domain.Entities.OrderEntities.Order", null)
                         .WithMany("orderItems")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.HasOne("Domain.Entities.ProductBrand", "ProductBrand")
                         .WithMany("Products")
-                        .HasForeignKey("BrandId")
+                        .HasForeignKey("brandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.ProductType", "productType")
                         .WithMany("Products")
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("typeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -259,15 +260,15 @@ namespace Persistance.Migrations
                     b.Navigation("productType");
                 });
 
-            modelBuilder.Entity("Domain.Entities.OrderEntities.DeliveryWays", b =>
-                {
-                    b.Navigation("Order")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.OrderEntities.Order", b =>
                 {
                     b.Navigation("orderItems");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OrderEntities.deliveryMethod", b =>
+                {
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductBrand", b =>

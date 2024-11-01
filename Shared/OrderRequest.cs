@@ -8,10 +8,10 @@ namespace Shared
 {
     public class OrderRequest
     {
-        public string BascketId { get; set; }
+        public string BasketId { get; set; }
 
-        public AddressDto ShippingAddress { get; set; }
+        public AddressDto shipToAddress { get; set; }
 
-        public int DeliveryWayId { get; set; }
+        public int deliveryMethodId { get; set; }
     }
 }

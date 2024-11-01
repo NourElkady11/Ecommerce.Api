@@ -10,6 +10,14 @@ namespace Domain.Entities
     {
         public string Id { get; set; }
 
-        public IEnumerable<Backet_Item?> Items { get; set; }
+        public IEnumerable<Basket_Item?> Items { get; set; }
+
+        public string? paymentIntentId { get; set; } 
+
+        public string? clientSecret { get; set; }
+
+        public decimal ?shippingPrice { get; set; }
+
+        public int? deliveryMethodId { get; set; }
     }
 }

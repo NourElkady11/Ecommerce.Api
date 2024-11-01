@@ -16,6 +16,14 @@ namespace Ecommerce.Api.Extentions
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             Services.AddControllers().AddApplicationPart(typeof(Presentaion.AssemblyRefrence).Assembly);
             Services.AddEndpointsApiExplorer();
+            Services.AddCors(options =>
+            {
+                options.AddPolicy("CORSPOLICY", builder =>
+                {
+                    builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
+
+                });
+            });
             Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()

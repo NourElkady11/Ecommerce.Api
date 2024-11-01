@@ -15,12 +15,13 @@ namespace Services.MappingProfiles
         public OrderProfile()
         {
             CreateMap<Order, OrderResult>().ForMember(o=>o.PymentStatus,k=>k.MapFrom(s=>s.PymentStatus.ToString())).
-                ForMember(o => o.DeliveryWays, k => k.MapFrom(s =>s.DeliveryWay.ShortName))
-                .ForMember(o=>o.TotalPrice,s=>s.MapFrom(d=>d.Subtotal+d.DeliveryWay.Cost));
+                ForMember(o => o.DeliveryWays, k => k.MapFrom(s =>s.DeliveryWay.shortName))
+                .ForMember(o=>o.TotalPrice,s=>s.MapFrom(d=>d.Subtotal+d.DeliveryWay.cost));
             CreateMap<AddressOfOrder, AddressDto>().ReverseMap();
             CreateMap<OrderItems, OrderItemsDto>().ForMember(s=>s.PictureUrl,s=>s.MapFrom<OrderPictureResolver>());
-            CreateMap<DeliveryWays, DeliveryWaysResult>();
-            CreateMap<AddressDto, Address>().ReverseMap();
+            CreateMap<deliveryMethod, deliveryMethodResult>();
+            CreateMap<AddressDto, Address>().ForMember(dest => dest.Username, opt => opt.MapFrom(src => $"{src.firstname} {src.lastname}")).ReverseMap(); 
+            CreateMap<AddressDto, AddressOfOrder>().ForMember(dest => dest.Username, opt => opt.MapFrom(src => $"{src.firstname} {src.lastname}")).ReverseMap(); 
         }
     }
 }

@@ -32,9 +32,9 @@ namespace Shared
 
     public enum productFilterations
     {
-        NameAscending,
-        NameDescending,
-        PriceAscending,
-        PriceDescending,
+        nameAsc,
+        nameDsc,
+        priceAsc,
+        priceDsc,
     }
 }

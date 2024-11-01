@@ -15,14 +15,16 @@ namespace Services.MappingProfiles
     {
         public string Resolve(Product source, ProductDto destination, string destMember, ResolutionContext context)
         {
-            if (string.IsNullOrWhiteSpace(source.PictureUrl))
+            if (string.IsNullOrWhiteSpace(source.pictureUrl))
             {
                 return string.Empty;
             }
             else
             {
-                return $"{configuration["BaseUrl"]}/{source.PictureUrl}";
+                return $"{configuration["BaseUrl"].Replace("api/", "")}{source.pictureUrl}";
+
             }
+
         }
     }
 }

@@ -18,11 +18,11 @@ namespace Services
 {
     public class OrderService(IUnitOfWork unitOfWork,IMapper mapper,IBacketRepository backetRepository) : IOrderService
     {
-        public async Task<OrderResult> CreateOrder(OrderRequest orderRequest, string UserEmail)
+        public async Task<OrderResult> CreateOrUpdateOrder(OrderRequest orderRequest, string UserEmail)
         {
-            var address = mapper.Map<AddressOfOrder>(orderRequest.ShippingAddress);
-            var backet = await backetRepository.GetcustomerBacketAsync(orderRequest.BascketId)??throw new BacketNotFound(orderRequest.BascketId);
-
+            var address = mapper.Map<AddressOfOrder>(orderRequest.shipToAddress);
+            var backet = await backetRepository.GetcustomerBacketAsync(orderRequest.BasketId)??throw new BacketNotFound(orderRequest.BasketId);
+           
             var orderItems = new List<OrderItems>();
 
             foreach (var item in backet.Items)
@@ -31,24 +31,30 @@ namespace Services
                var oRderitem= CreateOrderItem(item, prod);
                 orderItems.Add(oRderitem);
             }
+            var order_Repo = unitOfWork.GetRepository<Order, Guid>();
+            var existingOrder =await unitOfWork.GetRepository<Order, Guid>().GetAsync(new OrderWithPaymentIntentSpecefications(backet.paymentIntentId));
+            if(existingOrder is not null)
+            {
+                order_Repo.DeleteAsync(existingOrder);
+            }
 
-            var DelvWays = await unitOfWork.GetRepository<DeliveryWays, int>().GetAsyncByid(orderRequest.DeliveryWayId) ?? throw new DeliveryWaysNotFound(orderRequest.DeliveryWayId);
+            var DelvWays = await unitOfWork.GetRepository<deliveryMethod, int>().GetAsyncByid(orderRequest.deliveryMethodId) ?? throw new DeliveryWaysNotFound(orderRequest.deliveryMethodId);
 
             var subtot = orderItems.Sum(item => item.Price * item.Quantity);
             //Map to ==> AddressOfOrder From orderRequest.ShippingAddress
-            var order =new Order(UserEmail,address, orderItems, DelvWays, subtot);
+            var order =new Order(UserEmail,address, orderItems, DelvWays, subtot,backet.paymentIntentId);
             await unitOfWork.GetRepository<Order,Guid>().AddAsync(order);
-            await unitOfWork.SaveChangesAsync();
 
+            await unitOfWork.SaveChangesAsync();
             return mapper.Map<OrderResult>(order);
         }
 
-        private OrderItems CreateOrderItem(Backet_Item item, Product prod) => new OrderItems() { ProductName = prod.Name, ProductsId = prod.Id, PictureUrl = prod.PictureUrl, Price = prod.Price, Quantity = item.Quantity};
+        private OrderItems CreateOrderItem(Basket_Item item, Product prod) => new OrderItems() { ProductName = prod.name, ProductsId = prod.Id, PictureUrl = prod.pictureUrl, Price = prod.price, Quantity = item.quantity.Value};
 
-        public async Task<IEnumerable<DeliveryWaysResult>> GetDeliveryWaysAsync()
+        public async Task<IEnumerable<deliveryMethodResult>> GetDeliveryWaysAsync()
         {
-            var DeliveryWays=await unitOfWork.GetRepository<DeliveryWays, int>().GetAllAsync();
-            return DeliveryWays is null ? throw new Exception("DeliveryWays Not found") : mapper.Map<IEnumerable<DeliveryWaysResult>>(DeliveryWays);
+            var DeliveryMethods=await unitOfWork.GetRepository<deliveryMethod, int>().GetAllAsync();
+            return DeliveryMethods is null ? throw new Exception("DeliveryWays Not found") : mapper.Map<IEnumerable<deliveryMethodResult>>(DeliveryMethods);
         }
 
         public async Task<OrderResult> GetOrderbyIdAsync(Guid id)

@@ -13,8 +13,8 @@ namespace Services.MappingProfiles
     {
         public BacketProfile()
         {
-            CreateMap<CustomerBacket, BacketDto>().ReverseMap();
-            CreateMap<Backet_Item, Backet_ItemsDto>().ReverseMap();
+            CreateMap<CustomerBacket, BasketDto>().ReverseMap();
+            CreateMap<Basket_Item, Basket_ItemsDto>().ReverseMap();
         }
     }
 }

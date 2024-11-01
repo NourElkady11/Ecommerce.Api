@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Persistance.Data.Configurations
 {
-    internal class DeliveryMethodConf : IEntityTypeConfiguration<DeliveryWays>
+    internal class DeliveryMethodConf : IEntityTypeConfiguration<deliveryMethod>
     {
-        public void Configure(EntityTypeBuilder<DeliveryWays> builder)
+        public void Configure(EntityTypeBuilder<deliveryMethod> builder)
         {
-            builder.Property(d => d.Cost).HasColumnType("decimal(18,3)");
+            builder.Property(d => d.cost).HasColumnType("decimal(18,3)");
         }
     }
 }

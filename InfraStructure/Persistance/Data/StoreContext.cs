@@ -30,7 +30,7 @@ namespace Persistance.Data
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItems> OrderItems { get; set; }
-        public DbSet<DeliveryWays> DeliveryWays { get; set; }
+        public DbSet<deliveryMethod> deliveryMethod { get; set; }
 
      
 

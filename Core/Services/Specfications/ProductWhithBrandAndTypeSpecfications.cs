@@ -22,9 +22,9 @@ namespace Services.Specfications
         //get all products
 
         public ProductWhithBrandAndTypeSpecfications(ProductSpecificationsParamters productSpecificationsParamters):base(product=>
-        (!productSpecificationsParamters.BrandId.HasValue || productSpecificationsParamters.BrandId==product.BrandId)&&
-        (!productSpecificationsParamters.TypeId.HasValue || productSpecificationsParamters.TypeId==product.TypeId) &&
-        (string.IsNullOrWhiteSpace(productSpecificationsParamters.Search) || product.Name.ToLower().Contains(productSpecificationsParamters.Search.ToLower().Trim())))
+        (!productSpecificationsParamters.BrandId.HasValue || productSpecificationsParamters.BrandId==product.brandId)&&
+        (!productSpecificationsParamters.TypeId.HasValue || productSpecificationsParamters.TypeId==product.typeId) &&
+        (string.IsNullOrWhiteSpace(productSpecificationsParamters.Search) || product.name.ToLower().Contains(productSpecificationsParamters.Search.ToLower().Trim())))
         {
             AddInclude(p => p.ProductBrand);
             AddInclude(p => p.productType);
@@ -35,17 +35,17 @@ namespace Services.Specfications
             {
                 switch (productSpecificationsParamters.Sort)
                 {
-                    case productFilterations.NameAscending:
-                        SetOrderBy(p => p.Name);
+                    case productFilterations.nameAsc:
+                        SetOrderBy(p => p.name);
                         break;
-                     case productFilterations.NameDescending:
-                        SetOrderByDecending(p => p.Name);
+                     case productFilterations.nameDsc:
+                        SetOrderByDecending(p => p.name);
                          break;
-                     case productFilterations.PriceAscending:
-                        SetOrderBy(p => p.Price);   
+                     case productFilterations.priceAsc:
+                        SetOrderBy(p => p.price);   
                         break;
-                     case productFilterations.PriceDescending:
-                        SetOrderByDecending(p => p.Price);
+                     case productFilterations.priceDsc:
+                        SetOrderByDecending(p => p.price);
                         break;
                 }
             }

@@ -13,9 +13,9 @@ namespace Services.Specfications
     public class ProductCountSpecifications : Specifications<Product>
     {
         public ProductCountSpecifications(ProductSpecificationsParamters productSpecificationsParamters) : base(product =>
-        (!productSpecificationsParamters.BrandId.HasValue || productSpecificationsParamters.BrandId == product.BrandId) &&
-        (!productSpecificationsParamters.TypeId.HasValue || productSpecificationsParamters.TypeId == product.TypeId) &&
-        (string.IsNullOrWhiteSpace(productSpecificationsParamters.Search) || product.Name.ToLower().Contains(productSpecificationsParamters.Search.ToLower().Trim())))
+        (!productSpecificationsParamters.BrandId.HasValue || productSpecificationsParamters.BrandId == product.brandId) &&
+        (!productSpecificationsParamters.TypeId.HasValue || productSpecificationsParamters.TypeId == product.typeId) &&
+        (string.IsNullOrWhiteSpace(productSpecificationsParamters.Search) || product.name.ToLower().Contains(productSpecificationsParamters.Search.ToLower().Trim())))
         {
  
         }

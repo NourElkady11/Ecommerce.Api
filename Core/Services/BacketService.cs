@@ -14,21 +14,21 @@ namespace Services
 {
     public class BacketService(IBacketRepository backetRepository ,IMapper mapper) : IBacketService
     {
-        public async Task<BacketDto?> CreateOrUpdateBacketAsync(BacketDto backetDto)
+        public async Task<BasketDto?> CreateOrUpdateBacketAsync(BasketDto backetDto)
         {
             var customerbacket = mapper.Map<CustomerBacket>(backetDto);
             var updatedbacket = await backetRepository.CreateOrUpdateBacketAsync(customerbacket);
-            return updatedbacket is null ? throw new Exception("Cant update Backet Now"):mapper.Map<BacketDto>(updatedbacket);
+            return updatedbacket is null ? throw new Exception("Cant update Backet Now"):mapper.Map<BasketDto>(updatedbacket);
 
         }
 
         public async Task<bool> DeleteBacketAsync(string id)=>await backetRepository.DeleteBacketAsync(id);
    
 
-        public async Task<BacketDto?> GetBacketAsync(string id)
+        public async Task<BasketDto?> GetBacketAsync(string id)
         { 
             var backet=await backetRepository.GetcustomerBacketAsync(id);
-           return backet is null ? throw new BacketNotFound(id) : mapper.Map<BacketDto>(backet);
+           return backet is null ? throw new BacketNotFound(id) : mapper.Map<BasketDto>(backet);
         }
     }
 }

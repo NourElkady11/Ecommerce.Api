@@ -43,6 +43,7 @@ namespace Ecommerce.Api
                 app.UseSwaggerUI();
             }
             app.UseStaticFiles();
+            app.UseCors("CORSPOLICY");
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
