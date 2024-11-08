@@ -14,9 +14,9 @@ namespace Services.MappingProfiles
     {
         public OrderProfile()
         {
-            CreateMap<Order, OrderResult>().ForMember(o=>o.PymentStatus,k=>k.MapFrom(s=>s.PymentStatus.ToString())).
-                ForMember(o => o.DeliveryWays, k => k.MapFrom(s =>s.DeliveryWay.shortName))
-                .ForMember(o=>o.TotalPrice,s=>s.MapFrom(d=>d.Subtotal+d.DeliveryWay.cost));
+            CreateMap<Order, OrderResult>().ForMember(o => o.PymentStatus, k => k.MapFrom(s => s.PymentStatus.ToString())).
+                ForMember(o => o.DeliveryWays, k => k.MapFrom(s => s.DeliveryWay.shortName)).ForMember(o => o.dateTimeOffset, o => o.MapFrom(s => s.OrderDate))
+                .ForMember(o=>o.TotalPrice,s=>s.MapFrom(d=>d.Subtotal+d.DeliveryWay.cost)).ReverseMap();
             CreateMap<AddressOfOrder, AddressDto>().ReverseMap();
             CreateMap<OrderItems, OrderItemsDto>().ForMember(s=>s.PictureUrl,s=>s.MapFrom<OrderPictureResolver>());
             CreateMap<deliveryMethod, deliveryMethodResult>();

@@ -5,8 +5,10 @@ using Domain.Entities.OrderEntities;
 using Domain.Exeption;
 using Microsoft.Extensions.Configuration;
 using Services.Abstractions;
+using Services.Specfications;
 using Shared;
 using Stripe;
+using Stripe.Forwarding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,6 @@ namespace Services
             {
                 var way = await unitOfWork.GetRepository<deliveryMethod, int>().GetAsyncByid(backet.deliveryMethodId.Value) ?? throw new DeliveryWaysNotFound(backet.deliveryMethodId.Value);
                 backet.shippingPrice=way.cost;
-
             }
             var amount = (long)(backet.Items.Sum(item => item.quantity * item.price) + backet.shippingPrice) * 100;
             var servicePayment=new PaymentIntentService();
@@ -63,12 +64,62 @@ namespace Services
 
                 };
                 await servicePayment.UpdateAsync(backet.paymentIntentId, updateOptions);
-            }
 
+            }
             await backetRepository.CreateOrUpdateBacketAsync(backet);
             return mapper.Map<BasketDto>(backet);
 
           
         }
+
+        public async Task UpdateOrderPaymentStatus(string Jsonrequest, string stripeHeader)
+        {
+            var endpoint = configuration.GetRequiredSection("SecretKey")["EndPointSecret"];
+
+             var stripeEvent = EventUtility.ConstructEvent(Jsonrequest, stripeHeader, endpoint);
+
+            var paymentIntent=stripeEvent.Data.Object as PaymentIntent;
+
+            switch (stripeEvent.Type)
+            {
+                case EventTypes.PaymentIntentPaymentFailed:
+                    await UpdatePaymentStatusFailed(paymentIntent.Id);
+                    break;
+                case EventTypes.PaymentIntentSucceeded:
+                    await UpdatePaymentStatusRecived(paymentIntent.Id);
+                    break;
+                default:
+                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                    break;
+            }
+
+            // Handle the event
+            Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+           
+
+        }
+
+        private async Task UpdatePaymentStatusFailed(string paymentIntentId)
+        {
+            var order = await unitOfWork.GetRepository<Order, Guid>().GetAsync(new OrderWithPaymentIntentSpecefications(paymentIntentId)) ?? throw new Exception();
+            order.PymentStatus = OrderPymentStatus.Paymentfailed;
+            unitOfWork.GetRepository<Order,Guid>().UpdateAsync(order);
+            await unitOfWork.SaveChangesAsync();    
+        }
+
+        private async Task UpdatePaymentStatusRecived(string paymentIntentId)
+        {
+            var order = await unitOfWork.GetRepository<Order, Guid>().GetAsync(new OrderWithPaymentIntentSpecefications(paymentIntentId)) ?? throw new Exception();
+            order.PymentStatus = OrderPymentStatus.PaymentRecived;
+            unitOfWork.GetRepository<Order, Guid>().UpdateAsync(order);
+            await unitOfWork.SaveChangesAsync();
+        }
+           
     }
+
+      
+
+
+
+
 }

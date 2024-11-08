@@ -47,6 +47,7 @@ namespace Services
 
             await unitOfWork.SaveChangesAsync();
             return mapper.Map<OrderResult>(order);
+
         }
 
         private OrderItems CreateOrderItem(Basket_Item item, Product prod) => new OrderItems() { ProductName = prod.name, ProductsId = prod.Id, PictureUrl = prod.pictureUrl, Price = prod.price, Quantity = item.quantity.Value};
