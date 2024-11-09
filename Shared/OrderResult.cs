@@ -14,18 +14,19 @@ namespace Shared
 
         public AddressDto ShippingAddress { get; set; }//mapped inside it its not relation between 2 entites
 
-        public List<OrderItemsDto> orderItems { get; set; } //Relation (Collection)
+        public List<OrderItemsDto> items { get; set; } //Relation (Collection)
 
-        public string PymentStatus { get; set; }
+        public string status { get; set; }
 
         public string DeliveryWays { get; set; }//Relation (Navigational)
 
-        public decimal Subtotal { get; set; }//Quantity * Price
+        public decimal subtotal { get; set; }//Quantity * Price
 
         public string PaymentIntentId { get; set; } = string.Empty;
 
-        public decimal TotalPrice { get; set; }
+        public decimal total { get; set; }
 
-        public DateTimeOffset dateTimeOffset { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset orderDate { get; set; } = DateTimeOffset.Now;
     }
+
 }

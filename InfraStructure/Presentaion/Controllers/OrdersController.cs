@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace Presentaion.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public class ordersController(IServiceManger serviceManger):ApiController
+    public class ordersController(IServiceManger serviceManger) : ApiController
     {
-     
+
         [HttpGet("deliveryMethods")]
         [AllowAnonymous]
         public async Task<ActionResult<deliveryMethodResult>> GetAllDeliveryWays()

@@ -21,7 +21,7 @@ namespace Services.MappingProfiles
             }
             else
             {
-                return $"{configuration["BaseUrl"]}/{source.PictureUrl}";
+                return $"{configuration["BaseUrl"].Replace("api/", "")}{source.PictureUrl}";
             }
         }
     }
