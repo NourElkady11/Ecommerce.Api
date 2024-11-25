@@ -33,8 +33,8 @@ namespace Shared
     public enum productFilterations
     {
         nameAsc,
-        nameDsc,
+        name,
         priceAsc,
-        priceDsc,
+        priceDesc,
     }
 }

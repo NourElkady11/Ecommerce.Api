@@ -16,8 +16,6 @@ namespace Ecommerce.Api.Midlewares
             this.logger = logger;
         }
 
-
-
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
@@ -44,26 +42,23 @@ namespace Ecommerce.Api.Midlewares
             var response = new ErrorDetails()
             {
                 ErrorMessage = ex.Message,
-
             };
+
             httpContext.Response.StatusCode = ex switch
             {
                 NotFoundEx => (int)HttpStatusCode.NotFound,
                 UnAuthorizedException=> (int)HttpStatusCode.Unauthorized,
                 ValidationExeption validationExeption => HandleValidationException(validationExeption,response),
                 _ => (int)HttpStatusCode.InternalServerError
-
             };
             response.StatusCode=httpContext.Response.StatusCode;
             await httpContext.Response.WriteAsJsonAsync(response);
         }
-
         private int HandleValidationException(ValidationExeption validationExeption, ErrorDetails response)
         {
             response.Errors = validationExeption.Errors;
             return (int)HttpStatusCode.BadRequest;
         }
-
         private async Task HandleNotFoundEndPoint(HttpContext httpContext)
         {
             httpContext.Response.ContentType = "application/json";
@@ -75,7 +70,5 @@ namespace Ecommerce.Api.Midlewares
             };
             await httpContext.Response.WriteAsJsonAsync(response);
         }
-
-    
     }
 }

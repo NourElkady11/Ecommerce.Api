@@ -38,21 +38,23 @@ namespace Services.Specfications
                     case productFilterations.nameAsc:
                         SetOrderBy(p => p.name);
                         break;
-                     case productFilterations.nameDsc:
-                        SetOrderByDecending(p => p.name);
-                         break;
-                     case productFilterations.priceAsc:
+                    case productFilterations.name:
+                        SetOrderBy(p => p.name);
+                        break;
+                    case productFilterations.priceAsc:
                         SetOrderBy(p => p.price);   
                         break;
-                     case productFilterations.priceDsc:
+                     case productFilterations.priceDesc:
                         SetOrderByDecending(p => p.price);
                         break;
                 }
             }
 
 
+             
            
         }
+
 
 
     }

@@ -16,6 +16,7 @@ namespace Presentaion.Controllers
     [Authorize(AuthenticationSchemes ="Bearer",Roles ="Admin")]
     public class productsController(IServiceManger serviceManger):ApiController
     {
+        [RedisCach]
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProdcts([FromQuery] ProductSpecificationsParamters productSpecificationsParamters)
         {

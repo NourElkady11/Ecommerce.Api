@@ -6,28 +6,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Services.Abstractions;
 using Shared;
+using Stripe;
 
 namespace Services
 {
-    public sealed class ServiceManger : IServiceManger
+    public sealed class ServiceManger(IUnitOfWork unitOfWork, IMapper mapper, IBacketRepository backetRepository, IAuthenticationService AuthenticationService, UserManager<User> userManager, IOptions<Jwtoptions> options, IConfiguration configuration, IChacheRepository cacheRepository) : IServiceManger
     {
-        private readonly Lazy<IProductService> productServicee;
-        private readonly Lazy<IBacketService> backetServicee;
-        private readonly Lazy<IAuthenticationService> authenticationServiceeee;
-        private readonly Lazy<IOrderService> orderServicee;
-        private readonly Lazy<IPaymentService> paymentServiceee;
+        private readonly Lazy<IProductService> productServicee=new(()=>new ProductService(unitOfWork,mapper));
+        private readonly Lazy<IBacketService> backetServicee=new(()=>new BacketService(backetRepository,mapper));
+        private readonly Lazy<IAuthenticationService> authenticationServiceeee=new(()=>new AuthenticatinService(userManager,options,mapper));
+        private readonly Lazy<IOrderService> orderServicee=new(()=>new OrderService(unitOfWork,mapper,backetRepository));
+        private readonly Lazy<IPaymentService> paymentServiceee=new(()=>new PaymentService(backetRepository,unitOfWork,mapper,configuration));
+        private readonly Lazy<ICachService> cachServiceee=new(()=>new CachService(cacheRepository));
 
 
-        public ServiceManger(IUnitOfWork unitOfWork,IMapper mapper,IBacketRepository backetRepository, IAuthenticationService AuthenticationService,UserManager<User> userManager,IOptions<Jwtoptions> options,IConfiguration configuration)
-        {
-            this.productServicee = new Lazy<IProductService>(()=>new ProductService(unitOfWork,mapper));
-            this.backetServicee = new Lazy<IBacketService>(()=> new BacketService(backetRepository,mapper));
-            this.authenticationServiceeee = new Lazy<IAuthenticationService>(()=> new AuthenticatinService(userManager,options,mapper));
-            this.orderServicee = new Lazy<IOrderService>(()=> new OrderService(unitOfWork,mapper,backetRepository));
-            this.paymentServiceee = new Lazy<IPaymentService>(()=> new PaymentService(backetRepository,unitOfWork,mapper,configuration));
-
-            
-        }
+   
 
         public IProductService productService => productServicee.Value;
 
@@ -36,6 +29,8 @@ namespace Services
         public IOrderService orderService =>orderServicee.Value;
 
         public IPaymentService paymentService => paymentServiceee.Value;
+
+        public ICachService cachService => cachServiceee.Value;
 
         IAuthenticationService IServiceManger.authenticationService => authenticationServiceeee.Value ;
     }

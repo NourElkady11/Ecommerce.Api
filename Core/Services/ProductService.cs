@@ -18,6 +18,7 @@ namespace Services
             var totalCount = await unitOfWork.GetRepository<Product, int>().CountAsync(new ProductWhithBrandAndTypeSpecfications(productSpecificationsParamters));
             var result = new PaginatedResult<ProductDto>(productSpecificationsParamters.PageIndex, ProductResult.Count(), totalCount, ProductResult);
             return result;
+
         }
 
         public async Task<ProductDto?> GetProductById(int id)

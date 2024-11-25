@@ -148,7 +148,7 @@ namespace Services
                 /////////////////////////////
                 audience:jwtOptions.Audiance,
                 issuer:jwtOptions.Issuer,
-                expires:DateTime.UtcNow.AddDays(jwtOptions.DurationInDays),
+                expires:DateTime.UtcNow.AddMinutes(10),
                 signingCredentials:mySigningCredintials
             );
 

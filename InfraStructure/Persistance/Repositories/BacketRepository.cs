@@ -35,7 +35,7 @@ namespace Persistance.Repositories
             var jsonbacket=JsonSerializer.Serialize(backet);
 
             // it will create or update backett
-            var iscreatedOrUpdated = await dataBase.StringSetAsync(backet.Id, jsonbacket, timeToLive??TimeSpan.FromDays(30));
+            var iscreatedOrUpdated = await dataBase.StringSetAsync(backet.Id, jsonbacket, timeToLive??TimeSpan.FromDays(1));
 
             return iscreatedOrUpdated ? await GetcustomerBacketAsync(backet.Id) : null;
         }

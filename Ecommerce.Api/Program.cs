@@ -26,7 +26,6 @@ namespace Ecommerce.Api
 
             #region Services
             builder.Services.AddCoreServices(builder.Configuration);
-            builder.Services.AddInfraStructureServices(builder.Configuration);
             builder.Services.AddPresentationServices();
             #endregion
 

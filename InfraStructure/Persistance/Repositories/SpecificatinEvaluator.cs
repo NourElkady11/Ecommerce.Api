@@ -18,6 +18,7 @@ namespace Persistance.Repositories
             if(specifications.Criteria is not null)
             {
                query=query.Where(specifications.Criteria);
+        
             }
             /*  foreach (var item in specifications.IncludeExpressions)
               {

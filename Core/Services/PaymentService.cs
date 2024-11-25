@@ -21,6 +21,7 @@ namespace Services
     {
         public async Task<BasketDto> CreateUpdatePaymentIntentAsync(string backetId)
         {
+
             StripeConfiguration.ApiKey = configuration.GetRequiredSection("StripeSettings")["SecretKey"];
             //first get your secret key from Stripe
             var backet=await backetRepository.GetcustomerBacketAsync(backetId)??throw new BacketNotFound(backetId);
@@ -28,6 +29,7 @@ namespace Services
             foreach (var item in backet.Items)
             {
                 var product = await unitOfWork.GetRepository<Product, int>().GetAsyncByid(item.Id);
+
                 item.price = product.price;
             }
 
@@ -40,8 +42,10 @@ namespace Services
                 var way = await unitOfWork.GetRepository<deliveryMethod, int>().GetAsyncByid(backet.deliveryMethodId.Value) ?? throw new DeliveryWaysNotFound(backet.deliveryMethodId.Value);
                 backet.shippingPrice=way.cost;
             }
-            var amount = (long)(backet.Items.Sum(item => item.quantity * item.price) + backet.shippingPrice) * 100;
+            var amount=(long) (backet.Items.Sum(item => item.quantity * item.price) + backet.shippingPrice) * 100;
+
             var servicePayment=new PaymentIntentService();
+
             if (string.IsNullOrWhiteSpace(backet.paymentIntentId))
             {
                 //Create
@@ -52,7 +56,9 @@ namespace Services
                     PaymentMethodTypes = new List<string> {"card"}
                 };
                 var paymentintent = await servicePayment.CreateAsync(options);
+
                 backet.paymentIntentId = paymentintent.Id;
+
                 backet.clientSecret = paymentintent.ClientSecret;
             }
             else
@@ -61,15 +67,12 @@ namespace Services
                 var updateOptions = new PaymentIntentUpdateOptions()
                 {
                     Amount = amount,
-
                 };
                 await servicePayment.UpdateAsync(backet.paymentIntentId, updateOptions);
-
             }
             await backetRepository.CreateOrUpdateBacketAsync(backet);
-            return mapper.Map<BasketDto>(backet);
 
-          
+            return mapper.Map<BasketDto>(backet);
         }
 
         public async Task UpdateOrderPaymentStatus(string Jsonrequest, string stripeHeader)
@@ -92,11 +95,9 @@ namespace Services
                     Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
                     break;
             }
-
             // Handle the event
             Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
            
-
         }
 
         private async Task UpdatePaymentStatusFailed(string paymentIntentId)
