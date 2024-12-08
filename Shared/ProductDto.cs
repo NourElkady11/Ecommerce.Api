@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shared
 {
-    public record ProductDto
+    public class ProductDto
     {
         public int Id { get; set; }
 

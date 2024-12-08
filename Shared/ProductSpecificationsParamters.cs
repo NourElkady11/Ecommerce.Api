@@ -22,7 +22,7 @@ namespace Shared
         public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = value > 20 ? 20 : value;
+            set => _pageSize = value > 20 ? 50 : value;
         }
 
         public string? Search { get; set; }

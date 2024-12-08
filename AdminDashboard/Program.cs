@@ -1,10 +1,20 @@
+using AdminDashboard.DocumentService;
+using AdminDashboard.Models;
+using Domain.Contracts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Persistance.Data;
+using Persistance.Repositories;
+using Services.MappingProfiles;
 
 namespace AdminDashboard
 {
+    /// <summary>
+    /// /////////////////////////////////////////////
+    /// </summary>
     public class Program
     {
         public static void Main(string[] args)
@@ -36,7 +46,13 @@ namespace AdminDashboard
 
             }).AddEntityFrameworkStores<StoreIdentityContext>().AddDefaultTokenProviders();//for rest of services;
 
-            var app = builder.Build();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+			builder.Services.AddAutoMapper(typeof(Program).Assembly);
+            builder.Services.AddScoped<IDocummentService, DocummentService>();
+
+
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

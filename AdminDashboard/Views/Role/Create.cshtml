@@ -1,0 +1,13 @@
+﻿@model RoleViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+<form method="post" asp-action="Create">
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="input-group mb-2">
+        <input asp-for="Name" class="form-control" />
+        <button type="submit" class="btn btn-success">Add New Role</button>
+
+    </div>
+</form>
+

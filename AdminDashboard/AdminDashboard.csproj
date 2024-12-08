@@ -11,13 +11,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Domain\Domain.csproj" />
     <ProjectReference Include="..\Core\Services\Services.csproj" />
-    <ProjectReference Include="..\Ecommerce.Api\Ecommerce.Api.csproj" />
     <ProjectReference Include="..\InfraStructure\Persistance\Persistance.csproj" />
-    <ProjectReference Include="..\InfraStructure\Presentaion\Presentaion.csproj" />
   </ItemGroup>
 
 </Project>

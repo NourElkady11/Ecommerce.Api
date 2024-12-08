@@ -16,6 +16,7 @@ namespace Domain.Entities
         public ProductBrand ProductBrand { get; set; }
 
         public int brandId { get; set; }
+     
 
         public ProductType productType { get; set; }
 

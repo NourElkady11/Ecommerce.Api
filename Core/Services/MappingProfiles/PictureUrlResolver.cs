@@ -11,7 +11,7 @@ using static System.Net.WebRequestMethods;
 
 namespace Services.MappingProfiles
 {
-    internal class PictureUrlResolver(IConfiguration configuration) : IValueResolver<Product, ProductDto, string>
+    public class PictureUrlResolver(IConfiguration configuration) : IValueResolver<Product, ProductDto, string>
     {
         public string Resolve(Product source, ProductDto destination, string destMember, ResolutionContext context)
         {
@@ -21,7 +21,7 @@ namespace Services.MappingProfiles
             }
             else
             {
-                return $"{configuration["BaseUrl"].Replace("api/", "")}{source.pictureUrl}";
+                return $"{configuration["BaseUrl"].Replace("api/","")}{source.pictureUrl}";
 
             }
 

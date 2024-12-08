@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Presentaion.Controllers
 {
-    [Authorize(AuthenticationSchemes ="Bearer",Roles ="Admin")]
+ /*   [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]*/
     public class productsController(IServiceManger serviceManger):ApiController
     {
         [RedisCach]

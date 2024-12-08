@@ -1,0 +1,37 @@
+﻿@model RoleViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<form method="post" asp-action="Edit" class="mt-4">
+    <!-- Hidden Field for Id -->
+    <input asp-for="Id" class="form-control" hidden />
+
+    <!-- Role Name Input Section -->
+    <div class="form-group mt-3">
+        <label for="Name" class="form-label">Role Name</label>
+        <div class="d-flex align-items-center">
+            <!-- Role Name Input -->
+            <input asp-for="Name" class="form-control" placeholder="Enter role name" style="max-width: 300px;" />
+
+            <!-- Buttons beside the input -->
+            <button class="btn btn-success ms-2" type="submit" style="min-width: 100px;">
+                <i class="fas fa-save"></i> Save
+            </button>
+            <a class="btn btn-outline-secondary ms-2" asp-action="Index" style="min-width: 100px;">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+
+        <!-- Validation error message for Name -->
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <!-- Display Validation Summary if any errors -->
+    <div class="text-danger mt-3" asp-validation-summary="All"></div>
+</form>
+
+
+
