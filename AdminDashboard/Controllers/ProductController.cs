@@ -49,7 +49,6 @@ namespace AdminDashboard.Controllers
 
                     var mappedProduct = mapper.Map<Product>(productViewModel);
 
-
                 /*    var mappedProduct = new Product()
                     {
                         Id = productViewModel.Id,
