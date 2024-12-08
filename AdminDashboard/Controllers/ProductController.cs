@@ -47,7 +47,7 @@ namespace AdminDashboard.Controllers
                     await AdminDocummentSettings.uploadFile(productViewModel.Picture, "products");
                 }
 
-                var mappedProduct = mapper.Map<Product>(productViewModel);
+                    var mappedProduct = mapper.Map<Product>(productViewModel);
 
 
                 /*    var mappedProduct = new Product()
