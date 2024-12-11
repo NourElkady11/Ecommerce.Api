@@ -2,6 +2,7 @@ using AdminDashboard.DocumentService;
 using AdminDashboard.Models;
 using Domain.Contracts;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,7 +63,11 @@ namespace AdminDashboard
             });
 
             builder.Services.AddScoped<IDocummentService, DocummentService>();
-
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.AccessDeniedPath = new PathString("Home/Error");
+                options.LoginPath = new PathString("Admin/Login");
+            });
 
             var app = builder.Build();
 
@@ -78,12 +83,12 @@ namespace AdminDashboard
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Admin}/{action=Login}/{id?}");
 
             app.Run();
         }
