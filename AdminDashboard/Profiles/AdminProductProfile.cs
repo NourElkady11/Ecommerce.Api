@@ -15,7 +15,7 @@ namespace Services.MappingProfiles
     {
         public AdminProductProfile() {
 
-            CreateMap<Product, ProductViewModel>().ForMember(s => s.pictureUrl, op => op.MapFrom<AdminPictureUrlResolver>()).ReverseMap();
+            CreateMap<Product, ProductViewModel>()/*ForMember(s => s.pictureUrl, op => op.MapFrom<AdminPictureUrlResolver>())*/.ReverseMap();
        
            
 

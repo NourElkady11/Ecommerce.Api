@@ -47,12 +47,24 @@ namespace AdminDashboard
             }).AddEntityFrameworkStores<StoreIdentityContext>().AddDefaultTokenProviders();//for rest of services;
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-			builder.Services.AddAutoMapper(typeof(Program).Assembly);
+          
+
+     /*       builder.Services.AddAutoMapper(typeof(Program).Assembly);
+            builder.Services.AddAutoMapper(typeof(Services.AssemblyRefrence).Assembly);*/
+
+            builder.Services.AddAutoMapper(typeof(Services.AssemblyRefrence).Assembly);
+
+            builder.Services.AddAutoMapper(p =>
+            {
+
+                p.AddProfile<AdminProductProfile>();
+
+            });
+
             builder.Services.AddScoped<IDocummentService, DocummentService>();
 
 
-
-			var app = builder.Build();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

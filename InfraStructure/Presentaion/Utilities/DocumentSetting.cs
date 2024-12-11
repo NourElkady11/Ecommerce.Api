@@ -26,13 +26,15 @@ namespace Services.Utilities
 
         }
 
-        public static bool DeleteFile(string foldername, string filename)
+        public static bool DeleteFile(string pictureUtl, string foldername)
         {
-            string Filepath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", foldername, filename);
+            string Folderpath = Path.Combine(Directory.GetCurrentDirectory(),@"wwwroot\");
+            
+            var filepath=Path.Combine(pictureUtl, foldername);
 
-            if (File.Exists(Filepath))
+            if (File.Exists(filepath))
             {
-                File.Delete(Filepath);
+                File.Delete(filepath);
                 return true;
             }
             else { 

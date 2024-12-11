@@ -4,7 +4,7 @@
     {
         Task<string> uploadFile(IFormFile file, string foldername);
 
-        Task<bool>  DeleteFile(string PictureUrl, string folderName);
+        Task<bool> DeleteFile(string pictureUrl, string foldername);
 
     }
 }

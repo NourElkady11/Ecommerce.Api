@@ -1,0 +1,24 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 style="color:red">Are you sure you want to delete that Product </h1>
+
+
+<form method="post" asp-action="Delete">
+
+    <input hidden asp-for="Id"></input>
+    <input hidden asp-for="pictureUrl"></input>
+
+
+    <partial name="DeletePartial"></partial>
+
+    <div class="form-group">
+        <button class="btn btn-danger" type="submit">Delete</button>
+        <a class="btn btn-success" asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+

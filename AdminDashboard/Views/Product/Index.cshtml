@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductViewModel>
+﻿@model IEnumerable<ProductDto>
 @{
 	ViewData["Title"] = "Index";
 }
@@ -31,9 +31,9 @@
 							<img class="w-25" src="@Product.pictureUrl" />
 						</td>
 						<td>@Product.description</td>
-						<td>@Product.price</td>
-						<td>@Product.ProductBrand.Name</td>
-						<td>@Product.productType.Name</td>
+						<td>@Product.Price</td>
+						<td>@Product.brandName</td>
+						<td>@Product.typeName</td>
 						<td>
 							<div class=" d-flex">
 								<a class="btn mb-2 text-warning" asp-action="Edit" asp-route-id="@Product.Id"><i class="fas fa-pen"></i> </a>

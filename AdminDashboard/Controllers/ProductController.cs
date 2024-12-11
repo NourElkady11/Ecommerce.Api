@@ -16,25 +16,13 @@ namespace AdminDashboard.Controllers
         {
             var productSpecificationsParamters = new ProductSpecificationsParamters() { PageSize = int.MaxValue };
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWhithBrandAndTypeSpecfications(productSpecificationsParamters));
-            var mappedProd = mapper.Map<IEnumerable<ProductViewModel>>(products);
+            var mappedProd = mapper.Map<IEnumerable<ProductDto>>(products);
             return View(mappedProd);
         }
 
 
-
-        public async Task<IActionResult> Create(int id)
-        {
-            var product = await unitOfWork.GetRepository<Product, int>().GetAsyncByid(id);
-
-            var mappedProduct = mapper.Map<ProductViewModel>(product);
-
-            return View(mappedProduct);
-        }
-
-
-
-
-
+        public async Task<IActionResult> Create() => View();
+      
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
@@ -44,8 +32,8 @@ namespace AdminDashboard.Controllers
                 if (productViewModel.Picture != null)
                 {
                     productViewModel.pictureUrl = await docummentService.uploadFile(productViewModel.Picture, "products");
-                    await AdminDocummentSettings.uploadFile(productViewModel.Picture, "products");
-                }
+/*                    await AdminDocummentSettings.uploadFile(productViewModel.Picture, "products");
+*/                }
 
                 var mappedProduct = mapper.Map<Product>(productViewModel);
 
@@ -78,21 +66,20 @@ namespace AdminDashboard.Controllers
 
 
 
-
-
         public async Task<IActionResult> Edit(int id)
         {
-            /*            var prod=unitOfWork.GetRepository<Product, int>().GetAsyncByid(id);
-                        if (prod == null)
-                        {
-                            ModelState.AddModelError(string.Empty, "Error has been occured");
-                            return View();
-                        }
-                        else
-                        {
-                            unitOfWork.
-                        }*/
-            return View();
+            var prod = await unitOfWork.GetRepository<Product, int>().GetAsyncByid(id);
+            if (prod == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error has been occured");
+                return View();
+            }
+            else
+            {
+                var mappedprod=mapper.Map<ProductViewModel>(prod);
+                return View(mappedprod);
+            }
+
         }
 
 
@@ -116,6 +103,7 @@ namespace AdminDashboard.Controllers
                 {
                     var prod = mapper.Map<Product>(productViewModel);
                     unitOfWork.GetRepository<Product, int>().UpdateAsync(prod);
+                    unitOfWork.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -127,6 +115,63 @@ namespace AdminDashboard.Controllers
 
             return View(productViewModel);
         }
+
+
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var prod = await unitOfWork.GetRepository<Product, int>().GetAsyncByid(id);
+            if (prod == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error has been occured");
+                return View();
+            }
+            else
+            {
+                var mappedprod = mapper.Map<ProductViewModel>(prod);
+                return View(mappedprod);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromForm]int id,ProductViewModel productViewModel)
+        {
+            if(id != productViewModel.Id)
+            {
+                return BadRequest();
+            }
+
+            if (productViewModel.Picture is not null)
+            {
+                await docummentService.DeleteFile(productViewModel.pictureUrl,"images");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var prod = mapper.Map<Product>(productViewModel);
+                    unitOfWork.GetRepository<Product, int>().DeleteAsync(prod);
+                    unitOfWork.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+
+            }
+            return View(productViewModel);
+
+
+        }
+
+
+
+
+
+
 
     }
 }

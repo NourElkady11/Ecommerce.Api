@@ -20,7 +20,7 @@ namespace Presentaion.Controllers
 
 
         [HttpPost("delete")]
-        public ActionResult<bool> DeleteFile(string PictureUrl,string folderName)
+        public ActionResult<bool> DeleteFile([FromQuery]string PictureUrl, [FromQuery] string folderName)
             =>DocumentSetting.DeleteFile(PictureUrl, folderName);
 
 

@@ -3,24 +3,7 @@ namespace AdminDashboard.DocumentService
 {
     public class DocummentService(ILogger<DocummentService> logger) : IDocummentService
     {
-        public async Task<bool> DeleteFile(string PictureUrl, string folderName)
-        {
-            using var client = new HttpClient();
-            var respone = await client.PostAsync($"https://localhost:5001/api/Documment/delete?PictureUrl={PictureUrl}&folderName={folderName}", null);
-            var res = respone.EnsureSuccessStatusCode();
-            var responceData = await respone.Content.ReadAsStringAsync();
-            if (res.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-
-        }
-
+  
         public async Task<string> uploadFile(IFormFile file, string foldername)
         {
             try
@@ -44,6 +27,25 @@ namespace AdminDashboard.DocumentService
                 logger.LogError(ex.Message);
                 throw;
             }
+
+        }
+
+
+        public async Task<bool> DeleteFile(string pictureUrl, string foldername)
+        {
+            using var client = new HttpClient();
+            var respone = await client.PostAsync($"https://localhost:5001/api/Documment/delete?PictureUrl={pictureUrl}&folderName={foldername}", null);
+            var res = respone.EnsureSuccessStatusCode();
+            var responceData = await respone.Content.ReadAsStringAsync();
+            if (res.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
 
         }
     }
