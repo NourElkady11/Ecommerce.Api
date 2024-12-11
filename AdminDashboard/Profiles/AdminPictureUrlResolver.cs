@@ -15,7 +15,7 @@ namespace AdminDashboard.Profiles
 			}
 			else
 			{
-				return $"{configuration["BaseUrl"].Replace("api/", "")}/{source.pictureUrl}/";
+				return $"{configuration["BaseUrl"].Replace("api/", "")}{source.pictureUrl}";
 
 			}
 

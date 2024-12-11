@@ -30,7 +30,7 @@ namespace AdminDashboard.Controllers
 
             return View(mappedProduct);
         }
-   
+
 
 
 
@@ -47,7 +47,7 @@ namespace AdminDashboard.Controllers
                     await AdminDocummentSettings.uploadFile(productViewModel.Picture, "products");
                 }
 
-                    var mappedProduct = mapper.Map<Product>(productViewModel);
+                var mappedProduct = mapper.Map<Product>(productViewModel);
 
                 /*    var mappedProduct = new Product()
                     {
@@ -77,6 +77,56 @@ namespace AdminDashboard.Controllers
         }
 
 
+
+
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            /*            var prod=unitOfWork.GetRepository<Product, int>().GetAsyncByid(id);
+                        if (prod == null)
+                        {
+                            ModelState.AddModelError(string.Empty, "Error has been occured");
+                            return View();
+                        }
+                        else
+                        {
+                            unitOfWork.
+                        }*/
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm] int id, ProductViewModel productViewModel)
+        {
+            if (id != productViewModel.Id)
+            {
+                return BadRequest();
+            }
+
+            if (productViewModel.Picture is not null)
+            {
+                productViewModel.pictureUrl = await docummentService.uploadFile(productViewModel.Picture, "products");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var prod = mapper.Map<Product>(productViewModel);
+                    unitOfWork.GetRepository<Product, int>().UpdateAsync(prod);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+
+            }
+
+            return View(productViewModel);
+        }
 
     }
 }
