@@ -66,7 +66,9 @@ namespace AdminDashboard
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.AccessDeniedPath = new PathString("Home/Error");
+                //it goes instead of 403 forbidden 
                 options.LoginPath = new PathString("Admin/Login");
+                //if you dont you must make the Admin controller named Account to go by defult to Account/Login
             });
 
             var app = builder.Build();
